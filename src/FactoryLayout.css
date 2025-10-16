@@ -1,0 +1,343 @@
+/* --- General Layout --- */
+:root {
+  --map-bg: #f4f7f9;
+  --section-bg: #ffffff;
+  --section-border: #e4e9ed;
+  --text-dark: #2c3e50;
+  --text-light: #8492a6;
+  --accent-blue: #3498db;
+  --valid-green: #2ecc71;
+  --invalid-red: #e74c3c;
+  --training-yellow: #f1c40f;
+}
+
+body {
+  margin: 0;
+  background-color: #f0f2f5;
+  overflow: hidden;
+}
+
+.factory-container {
+  display: flex;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* --- Left Carousel --- */
+.left-carousel {
+  width: 280px;
+  background: var(--section-bg);
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease;
+  z-index: 100;
+  flex-shrink: 0;
+}
+.left-carousel.open { width: 280px; }
+.left-carousel:not(.open) { width: 70px; }
+.carousel-btn { background: var(--accent-blue); color: white; border: none; padding: 20px; cursor: pointer; font-size: 1.5rem; text-align: left; flex-shrink: 0; }
+.left-carousel:not(.open) .carousel-btn { text-align: center; }
+.carousel-content { padding: 0 20px; overflow-y: auto; opacity: 1; transition: opacity 0.3s ease; flex-grow: 1; }
+.left-carousel:not(.open) .carousel-content { opacity: 0; }
+.department-group h4 { margin: 15px 0 10px; color: var(--text-dark); border-bottom: 1px solid #f0f0f0; padding-bottom: 8px; }
+.worker-box { background: #fff; color: var(--text-dark); padding: 10px; margin-bottom: 8px; border-radius: 5px; cursor: grab; text-align: center; font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,0.08); transition: all 0.2s; border: 1px solid #eee; }
+.worker-box:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); border-color: var(--accent-blue); }
+.empty-dept-placeholder { font-style: italic; color: #aaa; font-size: 0.9em; padding: 5px; text-align: center; }
+
+/* --- SPACIOUS SCROLLABLE MAP --- */
+.factory-map-viewport {
+  flex-grow: 1;
+  overflow: auto; /* This makes the viewport scrollable */
+  background-color: var(--map-bg);
+}
+
+.factory-map-canvas {
+  position: relative;
+  width: 2800px; /* A very large canvas */
+  height: 2000px;
+  padding: 50px;
+}
+
+/* --- Section Styling --- */
+.section-wrapper {
+  position: absolute;
+  background: var(--section-bg);
+  border: 1px solid var(--section-border);
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
+  min-height: 350px;
+  min-width: 800px; /* LARGER sections */
+  display: flex;
+  flex-direction: column;
+}
+.section-wrapper h2 { margin: 0 0 30px 0; color: var(--text-dark); font-size: 1.8rem; }
+.machines-row { display: flex; gap: 40px; justify-content: space-around; flex-grow: 1; }
+
+/* SPACED OUT Section Positioning */
+#section-1 { top: 50px; left: 50px; }
+#section-2 { top: 50px; left: 950px; }
+#section-3 { top: 500px; left: 50px; }
+#section-4 { top: 500px; left: 950px; }
+#section-5 { top: 950px; left: 50px; }
+
+/* --- Machine Pod & Styling --- */
+.machine-pod { position: relative; display: flex; flex-direction: column; align-items: center; flex: 1; border: 2px dashed transparent; border-radius: 16px; padding: 10px; transition: border-color 0.2s; }
+.machine-pod:hover { border-color: var(--accent-blue); }
+.machine-box {
+  border-radius: 12px;
+  width: 180px;
+  height: 180px;
+  background: #fbfdff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.machine-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #d1d9e2;
+  mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M19.48 12.35c.53-.78.53-1.8 0-2.58l-1.48-2.18c-.33-.48-.88-.73-1.45-.73H15c-.55 0-1-.45-1-1V5.5c0-.68-.36-1.3-.92-1.62L10.9 2.1c-.78-.44-1.74-.44-2.52 0l-2.18 1.23C5.59 3.7 5.2 4.3 5.2 5V7c0 .55-.45 1-1 1H2.5c-.57 0-1.12.25-1.45.73L-.43 10.9c-.44.78-.44 1.74 0 2.52l1.23 2.18c.37.62.98 1 1.65 1H4c.55 0 1 .45 1 1v2.5c0 .57.25 1.12.73 1.45l2.18 1.48c.78.53 1.8.53 2.58 0l2.18-1.48c.48-.33.73-.88.73-1.45V17c0-.55.45-1 1-1h2.5c.68 0 1.3-.36 1.62-.92l1.23-2.18zM12 15c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>');
+  mask-size: contain; margin-bottom: 10px;
+}
+.machine-label { color: var(--text-light); font-weight: 500; font-size: 1rem; text-align: center; }
+
+/* Assigned Worker Styling */
+.assigned-worker {
+  position: absolute;
+  top: -20px;
+  background-color: #fff;
+  border: 1px solid var(--section-border);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border-radius: 8px;
+  padding: 8px 12px;
+  width: 180px;
+  box-sizing: border-box;
+  z-index: 20;
+}
+.worker-info { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.worker-name { font-weight: 600; color: var(--text-dark); }
+.skill-status { font-size: 0.75rem; font-style: italic; color: var(--text-light); }
+.progress-bar { width: 100%; height: 6px; background: #e9ecef; border-radius: 3px; overflow: hidden; }
+.progress-fill { height: 100%; transition: width 0.1s linear; }
+
+.assigned-worker.skilled .progress-fill { background-color: var(--valid-green); }
+.assigned-worker.not-skilled .progress-fill { background-color: var(--invalid-red); }
+
+@keyframes vibrate { 0%, 100% { transform: translate(0, 0); } 25% { transform: translate(-1px, 0); } 50% { transform: translate(1px, 0); } 75% { transform: translate(0, 1px); } }
+.machine-box.vibrating { animation: vibrate 0.15s linear infinite; }
+
+/* --- NEW: TRAINING CENTER STYLES --- */
+.training-center-wrapper {
+  position: absolute;
+  top: 950px;
+  left: 950px;
+  width: 800px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 30px 40px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 2px solid var(--training-yellow);
+}
+.training-center-wrapper h3 {
+  margin: 0 0 25px 0;
+  color: var(--text-dark);
+  font-size: 1.8rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+}
+.training-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.training-module {
+  display: grid;
+  grid-template-columns: 150px 1fr 60px;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  background: #f9fafb;
+  opacity: 0.5;
+  transition: all 0.3s;
+}
+.training-module.current {
+  opacity: 1;
+  background: #fffbe6;
+  border: 1px solid var(--training-yellow);
+}
+.training-module.done {
+  opacity: 1;
+}
+.module-name { font-weight: 600; }
+.module-progress-bar { width: 100%; height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden; }
+.module-progress-fill { height: 100%; background: var(--training-yellow); transition: width 0.05s linear; }
+.training-module.done .module-progress-fill { background: var(--valid-green); }
+.module-time { font-family: monospace; font-size: 0.9em; text-align: right; }
+.training-conclusion {
+  margin-top: 20px;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-dark);
+  background: #e8f5e9;
+  border: 1px solid var(--valid-green);
+  border-radius: 8px;
+}
+/* --- Add these styles to your existing FactoryLayout.css --- */
+
+/* --- Modal Styles --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 30px 40px;
+  border-radius: 12px;
+  width: 500px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: var(--text-dark);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.form-group input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.skills-checkboxes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f4f7f9;
+  padding: 8px;
+  border-radius: 5px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+/* --- Button Styles --- */
+.btn-primary {
+  background-color: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn-primary:hover {
+  background-color: #2980b9;
+}
+.btn-primary.full-width {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.btn-secondary {
+  background-color: #ecf0f1;
+  color: var(--text-dark);
+  border: 1px solid #bdc3c7;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.btn-secondary:hover {
+  background-color: #d2d7d9;
+}
+
+
+/* --- Worker Box Update --- */
+.worker-skills {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 4px;
+  font-weight: normal;
+  font-style: italic;
+}
+/* --- Add this new class to your FactoryLayout.css --- */
+
+.top-right-controls {
+  position: fixed; /* Use fixed to keep it on screen even when map scrolls */
+  top: 20px;
+  right: 20px;
+  z-index: 500; /* High z-index to be on top of everything */
+}
+
+
+/* --- And add/update these styles for the new worker box look --- */
+
+.worker-status {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: capitalize;
+  color: #fff;
+  background-color: var(--text-light); /* Default color */
+  border-radius: 8px;
+  padding: 2px 8px;
+  margin-top: 5px;
+  display: inline-block;
+}
+
+.worker-box[data-status="trained"] .worker-status {
+  background-color: var(--valid-green);
+}
+
+.worker-box[data-status="untrained"] .worker-status {
+  background-color: var(--training-yellow);
+}
+
+/* Remove button from carousel if it's still there */
+.left-carousel .btn-primary {
+  display: none;
+}
